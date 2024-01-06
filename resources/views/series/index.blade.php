@@ -13,18 +13,18 @@
     @endisset
 
     <ul class="list-group">
-        @foreach($series as $serie)
+        @foreach($seriesData as $series)
         <li class="list-group-item d-flex justify-content-between align-items-center">
-            {{ $serie->nome }}
+            {{ $series->name }}
 
             <span class="d-flex">
                 <a 
-                    href="{{ route('series.edit', $serie->id) }}" 
-                    title="Editar serie '{{ $serie->nome }}'"
+                    href="{{ route('series.edit', $series->id) }}" 
+                    title="Editar serie '{{ $series->name }}'"
                     class="btn btn-primary btn-sm"
                 >Editar</a>
                 <form 
-                    action="{{ route('series.destroy', $serie->id) }}" 
+                    action="{{ route('series.destroy', $series->id) }}" 
                     method="POST"
                     class="ms-2"
                 >
@@ -33,7 +33,7 @@
                     <button 
                         class="btn btn-danger btn-sm" 
                         type="submit"
-                        title="Excluir {{ $serie->nome }}"
+                        title="Excluir {{ $series->name }}"
                     >Excluir</button>
                 </form>
             </span>

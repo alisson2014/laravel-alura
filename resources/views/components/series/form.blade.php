@@ -5,15 +5,16 @@
         @method('PUT')
     @endif
     <div class="form-group">
-        <label for="nome">Nome da série:</label>
+        <label for="name">Nome da série:</label>
         <input 
             type="text" 
-            name="nome" 
-            id="nome" 
+            name="name" 
+            id="name" 
             class="form-control"
             minlength="3"
             required
-            @isset($nome) value="{{ $nome }}" @endisset 
+            autocomplete="off"
+            @isset($name) value="{{ $name }}" @endisset 
         />
     </div>
 

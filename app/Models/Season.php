@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\{BelongsTo, HasMany};
 class Season extends Model
 {
     use HasFactory;
+    protected $fillable = ['number'];
 
     public function series(): BelongsTo
     {

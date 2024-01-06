@@ -9,7 +9,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Episode extends Model
 {
     use HasFactory;
-    public bool $timestamps = false;
+    public $timestamps = false;
+    protected $fillable = ['number'];
 
     public function season(): BelongsTo
     {

@@ -4,17 +4,16 @@ namespace App\Http\Controllers\Series;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SeriesFormRequest;
-use App\Models\Series;
+use App\Models\{Series, Episode, Season};
 use Illuminate\Http\{RedirectResponse, Request};
 
 class SeriesController extends Controller
 {
     public function index(Request $request)
     {
-        $series = Series::all();
-        $successMessage = session('success.message');
-
-        return view('series.index', compact(['series', 'successMessage']));
+        return view('series.index')
+            ->with('seriesData', Series::all())
+            ->with('successMessage', session('success.message'));
     }
 
     public function create()
@@ -25,9 +24,28 @@ class SeriesController extends Controller
     public function store(SeriesFormRequest $request): RedirectResponse
     {
         $series = Series::create($request->all());
+        $seasons = [];
+        for ($i = 1; $i <= $request->seasonsQty; $i++) {
+            $seasons[] = [
+                'series_id' => $series->id,
+                'number' => $i
+            ];
+        }
+        Season::insert($seasons);
+
+        $episodes = [];
+        foreach ($series->seasons as $season) {
+            for ($j = 1; $j <= $request->episodesPerSeason; $j++) {
+                $episodes[] = [
+                    'season_id' => $season->id,
+                    'number' => $j
+                ];
+            }
+        }
+        Episode::insert($episodes);
 
         return to_route('series.index')
-            ->with('success.message', "Série '{$series->nome}' adicionada com sucesso");
+            ->with('success.message', "Série '{$series->name}' adicionada com sucesso");
     }
 
     public function destroy(Series $series): RedirectResponse
@@ -35,7 +53,7 @@ class SeriesController extends Controller
         $series->delete();
        
         return to_route('series.index')
-            ->with('success.message', "Série {$series->nome} removida com sucesso");
+            ->with('success.message', "Série {$series->name} removida com sucesso");
     }
 
     public function edit(Series $series)
@@ -49,6 +67,6 @@ class SeriesController extends Controller
         $series->save();
 
         return to_route('series.index')
-            ->with('success.message', "Série '{$series->nome}' atualizada com sucesso.");
+            ->with('success.message', "Série '{$series->name}' atualizada com sucesso.");
     }
 }
