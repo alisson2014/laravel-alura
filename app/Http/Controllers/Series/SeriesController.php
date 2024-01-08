@@ -4,11 +4,17 @@ namespace App\Http\Controllers\Series;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SeriesFormRequest;
-use App\Models\{Series, Episode, Season};
+use App\Models\{Series};
+use App\Repositories\SeriesRepository\EloquentSeriesRepository;
 use Illuminate\Http\{RedirectResponse, Request};
 
 class SeriesController extends Controller
 {
+    public function __construct(
+        private EloquentSeriesRepository $seriesRepository
+    ) {   
+    }
+
     public function index(Request $request)
     {
         return view('series.index')
@@ -23,26 +29,7 @@ class SeriesController extends Controller
 
     public function store(SeriesFormRequest $request): RedirectResponse
     {
-        $series = Series::create($request->all());
-        $seasons = [];
-        for ($i = 1; $i <= $request->seasonsQty; $i++) {
-            $seasons[] = [
-                'series_id' => $series->id,
-                'number' => $i
-            ];
-        }
-        Season::insert($seasons);
-
-        $episodes = [];
-        foreach ($series->seasons as $season) {
-            for ($j = 1; $j <= $request->episodesPerSeason; $j++) {
-                $episodes[] = [
-                    'season_id' => $season->id,
-                    'number' => $j
-                ];
-            }
-        }
-        Episode::insert($episodes);
+        $series = $this->seriesRepository->add($request);
 
         return to_route('series.index')
             ->with('success.message', "Série '{$series->name}' adicionada com sucesso");
