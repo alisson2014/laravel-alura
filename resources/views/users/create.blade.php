@@ -1,11 +1,16 @@
 @extends('components.layout')
 
-@section('title', 'Login')
+@section('title', 'Novo usuário')
 @section('content')
     @parent
 
-    <form action="{{ route('signin') }}" method="POST" class="mt-2">
+    <form action="" method="post">
         @csrf
+
+        <div class="form-group">
+            <label for="name" class="form-label">Nome</label>
+            <input type="text" name="name" id="name" class="form-control" />
+        </div>
 
         <div class="form-group">
             <label for="email" class="form-label">E-mail</label>
@@ -17,8 +22,6 @@
             <input type="password" name="password" id="password" class="form-control" />
         </div>
 
-        <button type="submit" class="btn btn-primary mt-3">Entrar</button>
-
-        <a href="{{ route('users.create') }}" class="btn btn-secondary mt-3">Registrar</a>
+        <button class="btn btn-primary mt-3">Registrar</button>
     </form>
 @endsection

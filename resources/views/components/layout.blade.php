@@ -9,6 +9,16 @@
     <!-- @vite(['resources/css/app.css', 'resources/js/app.js']) -->
 </head>
 <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{ route('series.index') }}">Home</a>
+    
+            @auth
+                <a href="{{ route('logout') }}">Sair</a>
+            @endauth
+        </div>
+    </nav>
+
     <div class="container">
         <h1>@yield('title')</h1>
 
