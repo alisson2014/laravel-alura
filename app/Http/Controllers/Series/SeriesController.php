@@ -7,12 +7,14 @@ use App\Http\Requests\SeriesFormRequest;
 use App\Models\{Series};
 use App\Repositories\SeriesRepository\EloquentSeriesRepository;
 use Illuminate\Http\{RedirectResponse, Request};
+use App\Http\Middleware\Authenticator;
 
 class SeriesController extends Controller
 {
     public function __construct(
         private EloquentSeriesRepository $seriesRepository
     ) {   
+        $this->middleware('authenticator')->except('index');
     }
 
     public function index(Request $request)
