@@ -5,6 +5,7 @@ use App\Http\Controllers\Login\LoginController;
 use App\Http\Controllers\Seasons\SeasonsController;
 use App\Http\Controllers\Series\SeriesController;
 use App\Http\Controllers\Users\UsersController;
+use App\Mail\SeriesCreated;
 use Illuminate\Support\Facades\Route;
 
 Route::resource('series', SeriesController::class)
@@ -35,3 +36,7 @@ Route::get('/register', [UsersController::class, 'create'])
 
 Route::post('/register', [UsersController::class, 'store'])
     ->name('users.store');
+
+Route::get('/email', function () {
+    return new SeriesCreated('Série teste', 11, 2, 5);
+});
