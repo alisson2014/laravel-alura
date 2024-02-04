@@ -3,7 +3,7 @@
 @section('title', 'Cadastro de séries')
 @section('content')
     @parent
-    <form action="{{ route('series.store') }}" method="POST">
+    <form action="{{ route('series.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
     
         <div class="row mb-3">
@@ -46,6 +46,18 @@
                     required
                     autocomplete="off"
                     value="{{ old('episodesPerSeason') }}"
+                />
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="form-group-col-12">
+                <label for="cover_path">Imagem</label>
+                <input 
+                    type="file" 
+                    name="cover_path" 
+                    id="cover_path" 
+                    class="form-control"
+                    accept="image/gif, image/png, image/jpeg"
                 />
             </div>
         </div>

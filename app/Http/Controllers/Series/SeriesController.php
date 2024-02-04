@@ -31,6 +31,8 @@ class SeriesController extends Controller
 
     public function store(SeriesFormRequest $request): RedirectResponse
     {
+        $coverPath = $request->file('cover_path')->store('series_cover', 'public');
+        $request->coverPath = $coverPath;
         $series = $this->seriesRepository->add($request);
         SeriesCreatedEvent::dispatch(
             $series->name,

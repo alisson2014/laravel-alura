@@ -3,8 +3,9 @@
 namespace App\Listeners;
 
 use App\Events\SeriesCreated;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
-class LogsSeriesCreated
+class LogsSeriesCreated implements ShouldQueue
 {
     /**
      * Create the event listener.

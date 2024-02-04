@@ -5,8 +5,9 @@ namespace App\Listeners;
 use App\Mail\SeriesCreated;
 use App\Events\SeriesCreated as SeriesCreatedEvent;
 use App\Models\User;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
-class EmailUsersAboutSeriesCreated
+class EmailUsersAboutSeriesCreated implements ShouldQueue
 {
     public function __construct()
     {
