@@ -22,7 +22,8 @@ class SeriesFormRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'min:3']
+            'name' => ['required', 'min:3'],
+            'cover_path' => ['max:10000', 'mimes:png,jpg,jpeg']
         ];
     }
 
@@ -30,7 +31,9 @@ class SeriesFormRequest extends FormRequest
     {
         return [
             'name.required' => 'O campo nome nome é obrigatório',
-            'name.min' => 'O campo nome precisa de pelo menos :min caracteres'
+            'name.min' => 'O campo nome precisa de pelo menos :min caracteres',
+            'cover_path.max' => 'A imagem tem que ter 10000kb ou menos',
+            'cover_path.mimes' => 'A imagem precisa ser do tipo jpg, jpeg ou png'
         ];
     }
 }

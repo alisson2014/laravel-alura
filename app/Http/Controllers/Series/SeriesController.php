@@ -6,13 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\SeriesFormRequest;
 use App\Models\{Series};
 use App\Events\SeriesCreated as SeriesCreatedEvent;
-use App\Repositories\SeriesRepository\EloquentSeriesRepository;
+use App\Repositories\SeriesRepository\SeriesRepository;
 use Illuminate\Http\{RedirectResponse, Request};
 
 class SeriesController extends Controller
 {
     public function __construct(
-        private EloquentSeriesRepository $seriesRepository
+        private SeriesRepository $seriesRepository
     ) {   
         $this->middleware('authenticator')->except('index');
     }
@@ -20,7 +20,7 @@ class SeriesController extends Controller
     public function index(Request $request)
     {
         return view('series.index')
-            ->with('seriesData', Series::all())
+            ->with('seriesData', $this->seriesRepository->all())
             ->with('successMessage', session('success.message'));
     }
 
@@ -31,9 +31,14 @@ class SeriesController extends Controller
 
     public function store(SeriesFormRequest $request): RedirectResponse
     {
-        $coverPath = $request->file('cover_path')->store('series_cover', 'public');
-        $request->coverPath = $coverPath;
-        $series = $this->seriesRepository->add($request);
+        $coverPath = $request->file('cover_path')?->store('series_cover', 'public');
+
+        $series = $this->seriesRepository->add(
+            $request->name, 
+            $request->seasonsQty, 
+            $request->episodesPerSeason,
+            $coverPath
+        );
         SeriesCreatedEvent::dispatch(
             $series->name,
             $series->id,
@@ -47,7 +52,13 @@ class SeriesController extends Controller
 
     public function destroy(Series $series): RedirectResponse
     {
+        $image_path = $series->cover_path;  
+        
         $series->delete();
+
+        if(\File::exists($image_path)) {
+            \File::delete($image_path);
+        }
        
         return to_route('series.index')
             ->with('success.message', "Série {$series->name} removida com sucesso");

@@ -9,7 +9,7 @@ use App\Mail\SeriesCreated;
 use Illuminate\Support\Facades\Route;
 
 Route::resource('series', SeriesController::class)
-    ->except(['show']);
+    ->except('show');
 
 Route::middleware('authenticator')->group(function () {
     Route::get('/', fn () => redirect('/series'));

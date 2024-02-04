@@ -57,7 +57,7 @@
                     name="cover_path" 
                     id="cover_path" 
                     class="form-control"
-                    accept="image/gif, image/png, image/jpeg"
+                    accept="image/png, image/jpeg, image/jpg"
                 />
             </div>
         </div>
