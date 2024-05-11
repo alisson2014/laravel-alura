@@ -56,9 +56,9 @@ class SeriesController extends Controller
         
         $series->delete();
 
-        if(\File::exists($image_path)) {
-            \File::delete($image_path);
-        }
+        // if(\File::exists($image_path)) {
+        //     \File::delete($image_path);
+        // }
        
         return to_route('series.index')
             ->with('success.message', "Série {$series->name} removida com sucesso");
